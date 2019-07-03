@@ -1,0 +1,1 @@
+# JuMag.doc
