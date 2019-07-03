@@ -2,7 +2,7 @@ using Documenter
 using JuMag
 
 makedocs(
-    sitename = "JuMag.jl",
+    sitename = "JuMagDocs.jl",
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true"
     ),
@@ -17,5 +17,5 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/ww1g11/JuMag.jl"
+    repo = "github.com/ww1g11/JuMagDocs.jl"
 )
