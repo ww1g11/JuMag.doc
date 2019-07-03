@@ -124,7 +124,7 @@ end
 relax_system()
 ```
 
-##Standard Problem #4
+## Standard Problem #4
 ```julia
 using JuMag
 using Printf
@@ -175,4 +175,3 @@ println("Done!")
 The output file is a simple text compatible with [Gnuplot](http://www.gnuplot.info/), like used for plot below.
 
 ![std4](scripts/std4.png)
-
