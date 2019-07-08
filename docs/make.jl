@@ -2,7 +2,7 @@ using Documenter
 using JuMag
 
 makedocs(
-    sitename = "JuMagDocs.jl",
+    sitename = "JuMag.jl",
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true"
     ),

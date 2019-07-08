@@ -8,22 +8,24 @@
 
 #### Exchange energy
 
-  ```math
-  E_\mathrm{ex} = \int_{V} A (\nabla \vec{m})^2 \mathrm{d}V
-  ```
-  The exchange energy is a sum of exchange interactions from 6 nearest neighbor cells:
+```math
+E_\mathrm{ex} = \int_{V} A (\nabla \vec{m})^2 \mathrm{d}V
+```
+
+The exchange energy is a sum of exchange interactions from 6 nearest neighbor cells:
 ```math
 \vec{H}_{i, e x}=\frac{A}{\mu_{0}} \sum_{<i, j>} \vec{m}_{j}
 ```
+
 #### Zeeman energy
-  ```math
-  E_\mathrm{ex} = \int_{V} \vec{H} \cdot \vec{m} \mathrm{d}V
-  ```
-  Applied zeeman field:
+```math
+E_\mathrm{ex} = \int_{V} \vec{H} \cdot \vec{m} \mathrm{d}V
+```
+Applied zeeman field:
 ```math
 \vec{H}_\mathrm{i,zeeman}=\vec{H}_\mathrm{ext}
-
 ```
+
 #### Anisotropy
 
 ```math
@@ -36,9 +38,9 @@ Set the angles between the anistropy axis and x,y,z coordinates as α,β,γ resp
 ```
 #### Bulk DMI energy
 
-  ```math
-  E_{\mathrm{dmi}} = \int_V D \vec{m} \cdot (\nabla \times \vec{m}) \, \mathrm{d}V
-  ```
+```math
+E_{\mathrm{dmi}} = \int_V D \vec{m} \cdot (\nabla \times \vec{m}) \, \mathrm{d}V
+```
 
 
 #### Demagnetization
@@ -49,10 +51,7 @@ The demagnetization is from dipolar interactions between spins, the field is as 
 ```math
 \overrightarrow{\mathbf{B}}_{\text { demag } }=\widehat{\mathbf{K}}_{i j} * \overrightarrow{\mathbf{M}}_{j}
 ```
-In JuMag we use FFT to calculate the demag kernel $/hat{k_{ij}} $
-
-
-
+In JuMag we use FFT to calculate the demag kernel ``$/hat{k_{ij}} $``
 
 
 
@@ -88,16 +87,16 @@ The simulation related to spin transfer torques (in-plane and current-perpendicu
 We provide a steepest descent energy minimization method for a complicated system,which is of the form
 
 ```math
-x_{k+1} = x_k + \alpha_k d_k 
+x_{k+1} = x_k + \alpha_k d_k
 ```
-where 
+where
 ```math
 d_k = - \nabla f(x_k)
 ```
 And for the micromagnetics, we have
 ```math
-\mathbf{m}_{k+1} = \mathbf{m}_{k} - {\tau}_k \mathbf{m}_k  \times (\mathbf{m}_k \times \mathbf{H}_{\mathrm{eff}}) 
-``` 
+\mathbf{m}_{k+1} = \mathbf{m}_{k} - {\tau}_k \mathbf{m}_k  \times (\mathbf{m}_k \times \mathbf{H}_{\mathrm{eff}})
+```
 In practice, we use the following update rule to keep the magnetization vector normalized.
 
 ```math
@@ -108,15 +107,15 @@ In practice, we use the following update rule to keep the magnetization vector n
 ```
 From the equation we have:
 ```math
-(1+\frac{{\tau}_k^2}{4} \boldsymbol{f}_k^2)\mathbf{m}_{k+1} = 
+(1+\frac{{\tau}_k^2}{4} \boldsymbol{f}_k^2)\mathbf{m}_{k+1} =
 (1-\frac{{\tau}_k^2}{4} \boldsymbol{f}_k^2)\mathbf{m}_{k} -  {\tau}_k \mathbf{g}_k
 ```
 where
 
 ```math
-\begin{aligned} 
+\begin{aligned}
 \mathbf{f}_k& = \mathbf{m}_k \times \mathbf{H}_{\mathrm{eff}}
-\\\boldsymbol{g}_{k} &=\boldsymbol{m}_{k} \times\left(\boldsymbol{m}_{k} \times \boldsymbol{H}_{\mathrm{eff}}\right) 
+\\\boldsymbol{g}_{k} &=\boldsymbol{m}_{k} \times\left(\boldsymbol{m}_{k} \times \boldsymbol{H}_{\mathrm{eff}}\right)
 \end{aligned}
 ```
 The step size $\tau_k$  can be computed by
@@ -124,7 +123,7 @@ The step size $\tau_k$  can be computed by
 ```math
 \tau_{k}^{1}=\frac{\sum_{i} \boldsymbol{s}_{k-1}^{i} \cdot \boldsymbol{s}_{k-1}^{i}}{\sum_{i} \boldsymbol{s}_{k-1}^{i} \cdot \boldsymbol{y}_{k-1}^{i}} \quad, \quad \tau_{k}^{2}=\frac{\sum_{i} \boldsymbol{s}_{k-1}^{i} \cdot \boldsymbol{y}_{k-1}^{i}}{\sum_{i} \boldsymbol{y}_{k-1}^{i} \cdot \boldsymbol{y}_{k-1}^{i}}
 ```
-where 
+where
 
 ```math
 \begin{aligned}  \boldsymbol{s}_{k-1} &=\boldsymbol{m}_{k}-\boldsymbol{m}_{k-1} \\ \boldsymbol{y}_{k-1} &=\boldsymbol{g}_{k}-\boldsymbol{g}_{k-1} \end{aligned}
