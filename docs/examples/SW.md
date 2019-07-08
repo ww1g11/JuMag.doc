@@ -1,6 +1,6 @@
 [Stoner–Wohlfarth model](https://en.wikipedia.org/wiki/Stoner%E2%80%93Wohlfarth_model):
 When the scale of system is within a exchange length, we can consider the magnetization as a uniform vector,and use the single axis anistropy to simulate the demagnetization.
-Set the anistropy axis in xz plane ,with angle $\theta$ to x-axis, and applied field is along positive z-coodinate.That is
+Set the anistropy axis and magnetization in xz plane ,with angle $\theta(0 \leq \theta \leq \frac{\pi}{2})$ and $ \phi$ to x-axis,respectively, and applied field is along positive z-coodinate.We have
 ```math
 E_\mathrm{anis} = - K_{u} (\vec{m} \cdot \hat{u})^2 \\
 ```
@@ -10,7 +10,7 @@ E_\mathrm{anis} = - K_{u} (\vec{m} \cdot \hat{u})^2 \\
 
 And
 ```math
-E_{zeeman}=-H_zm\cos\phi
+E_{zeeman}=-\mu_0H_zm\sin\phi
 
 ```
 By solving
@@ -19,15 +19,18 @@ By solving
 ```
 We get
 ```math
-\cos(\phi-\theta)\cos(\phi+\theta)=-\frac{H_z}{2K_u}\sin\phi
+\sin(\theta-\phi)=-\frac{\mu_0H_z}{K_u}\sin\phi
 ```
 When $H_z=0$, we have
 ```math
-\phi=\theta+\frac{\pi}{2} \quad
-or \quad\phi=\theta+\frac{3\pi}{2}
+\phi=\theta \quad
+or \quad\phi=\theta+\pi
 ```
-There supposed to be a magnetization component along z-axis
-Use JuMag to simulate the situation
+And the "Remanence" is
+```math
+M_z=m\sin \phi=\pm m\sin \theta
+```
+
 
 
 
