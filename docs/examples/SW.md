@@ -1,5 +1,5 @@
 [Stoner–Wohlfarth model](https://en.wikipedia.org/wiki/Stoner%E2%80%93Wohlfarth_model):
-When the scale of system is within a exchange length, we can consider the magnetization as a uniform vector,and use the single axis anistropy to simulate the demagnetization.
+When the scale of system is within an exchange length, we can consider the magnetization as a uniform vector,and use the single axis anistropy to simulate the dipolar interactions.
 Set the anistropy axis and magnetization in xz plane ,with angle $\theta(0 \leq \theta \leq \frac{\pi}{2})$ and $ \phi$ to x-axis,respectively, and applied field is along positive z-coodinate.We have
 ```math
 E_\mathrm{anis} = - K_{u} (\vec{m} \cdot \hat{u})^2 \\
@@ -30,6 +30,7 @@ And the "Remanence" is
 ```math
 M_z=m\sin \phi=\pm m\sin \theta
 ```
+Choose $\theta=\pi/4$, use JuMag to simulate the situation:
 
 
 
