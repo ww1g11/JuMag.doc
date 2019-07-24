@@ -12,8 +12,10 @@ makedocs(
         "tutorial.md",
         "equations.md",
         "notes.md",
-        "functions.md"
-        ]
+        "functions.md",
+        #"Examples" => ["examples/std4.md", "examples/SW.md"]
+        ],
+    highlightsig = true
 )
 
 deploydocs(
