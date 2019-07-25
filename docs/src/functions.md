@@ -13,6 +13,7 @@ add_dmi
 add_demag
 add_zeeman
 update_zeeman
+update_anis
 relax
 save
 ```
