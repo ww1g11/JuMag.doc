@@ -14,4 +14,5 @@ add_demag
 add_zeeman
 update_zeeman
 relax
+save
 ```
