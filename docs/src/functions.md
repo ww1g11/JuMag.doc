@@ -15,5 +15,5 @@ add_zeeman
 update_zeeman
 update_anis
 relax
-save
+save_m
 ```

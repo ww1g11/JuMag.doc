@@ -1,62 +1,64 @@
 # Implemented equations
 
-## Energies and effective field
+### Energies and effective field
+
+In micromagnetics, the effective field can be computed from the total micromagnetic energy
 
 ```math
-\vec{H}_{eff}=\vec{H}_\mathrm{ex}+\vec{H}_\mathrm{zeeman}+\vec{H}_{\mathrm{anis}}+\vec{H}_{\mathrm{demag}}+\vec{H}_{\mathrm{dmi}}
+\vec{H}_{\mathrm{eff}}=-\frac{1}{\mu_{0} M_{s}} \frac{\delta E}{\delta \vec{m}}
 ```
 
-#### Exchange energy
+The typical energy terms are
+
+- **Exchange energy**
 
 ```math
 E_\mathrm{ex} = \int_{V} A (\nabla \vec{m})^2 \mathrm{d}V
 ```
-
-The exchange energy is a sum of exchange interactions from 6 nearest neighbor cells:
+where ``(\nabla \vec{m})^{2}=\left(\nabla m_{x}\right)^{2}+\left(\nabla m_{y}\right)^{2}+\left(\nabla m_{z}\right)^{2}``.
+So the corresponding effective field is
 ```math
-\vec{H}_{i, e x}=\frac{A}{\mu_{0}} \sum_{<i, j>} \vec{m}_{j}
+\vec{H}_{\mathrm{ex}}=\frac{2 A}{\mu_{0} M_{s}} \nabla^{2} \vec{m}
 ```
 
-#### Zeeman energy
+- **Zeeman energy**
 ```math
-E_\mathrm{ex} = \int_{V} \vec{H} \cdot \vec{m} \mathrm{d}V
+E_\mathrm{ex} = -  \mu_0 \int_{V}  \vec{H} \cdot \vec{M} \mathrm{d}V
 ```
-Applied zeeman field:
-```math
-\vec{H}_\mathrm{i,zeeman}=\vec{H}_\mathrm{ext}
-```
+as expected, the effective field is ``\vec{H}``.
 
-#### Anisotropy
+- **Anisotropy**
 
+The uniaxial anisotropy energy is given by
 ```math
 E_\mathrm{anis} = -\int_{V} K_{u} (\vec{m} \cdot \hat{u})^2 \, dV
 ```
-Set the angles between the anistropy axis and x,y,z coordinates as α,β,γ respectively, the anistropy field can be written as :
+from which the effective field can be computed as
 ```math
-\vec{H}_\mathrm{i,anis}=\frac{2 \mathcal{K}_{u}}{\mu_{s}}\left({m_{x}  \cos^{2}\alpha \cdot\vec{i}} +{m_{y}  \cos^{2}\beta \cdot \vec{j}}+ m_{z} \cos^{2}\gamma \cdot \vec{k} \right)
-
+\vec{H}_{\mathrm{an}}=\frac{2 K_u}{\mu_0 M_s}\left(\vec{m} \cdot \hat{u}\right) \hat{u}
 ```
-#### Bulk DMI energy
+
+- **Bulk DMI energy**
+The Bulk DMI energy reads
 
 ```math
 E_{\mathrm{dmi}} = \int_V D \vec{m} \cdot (\nabla \times \vec{m}) \, \mathrm{d}V
 ```
 
+so the effective field is
 
-#### Demagnetization
 ```math
-\mathscr{E}_{\text { demag }}=-\frac{1}{2} \overrightarrow{\mathbf{M}} \cdot \overrightarrow{\mathbf{B}}_{\text { demag }}
+\vec{H}_\mathrm{D}=-\frac{2 D}{\mu_{0} M_{s}}(\nabla \times \vec{m})
 ```
-The demagnetization is from dipolar interactions between spins, the field is as the format:
+
+- **Magnetostatic energy**
 ```math
-\overrightarrow{\mathbf{B}}_{\text { demag } }=\widehat{\mathbf{K}}_{i j} * \overrightarrow{\mathbf{M}}_{j}
+E_{\mathrm{d}}=-\frac{\mu_{0}}{2} \int_{V} \vec{H}_{\mathrm{d}}(\mathbf{r}) \cdot
+\vec{M}(\mathbf{r}) d V
 ```
-In JuMag we use FFT to calculate the demag kernel ``$/hat{k_{ij}} $``
-
-
-
-
-
+```math
+\vec{H}_{\mathrm{d}}(\mathbf{r})=\frac{1}{4 \pi}\left(\int_{V} \rho_{m}\left(\mathbf{r}^{\prime}\right) \frac{\mathbf{r}-\mathbf{r}^{\prime}}{\left|\mathbf{r}-\mathbf{r}^{\prime}\right|^{3}} \mathrm{d}^{3} r^{\prime}+\int_{S} \sigma_{m}\left(\mathbf{r}^{\prime}\right) \frac{\mathbf{r}-\mathbf{r}^{\prime}}{\left|\mathbf{r}-\mathbf{r}^{\prime}\right|^{3}} \mathrm{d}^{2} r^{\prime}\right)
+```
 
 ## LLG equation
 
