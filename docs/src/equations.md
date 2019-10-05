@@ -38,6 +38,18 @@ from which the effective field can be computed as
 \vec{H}_{\mathrm{an}}=\frac{2 K_u}{\mu_0 M_s}\left(\vec{m} \cdot \hat{u}\right) \hat{u}
 ```
 
+- **Cubic Anisotropy**
+
+The cubic anisotropy energy is given by
+```math
+E_\mathrm{cubic} = -\int_{V} K_c (m_x^4 + m_y^4 + m_z^4) \, dV
+```
+and thus the corresponding effective field reads
+```math
+\vec{H}_{\mathrm{cubic}}= \frac{4 K_c}{\mu_0 M_s}  
+\left( m_x^3 \mathbf{e}_x + m_y^3 \mathbf{e}_y + m_z^3 \mathbf{e}_z \right) 
+```
+
 - **Bulk DMI energy**
 The Bulk DMI energy reads
 
