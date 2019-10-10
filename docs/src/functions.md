@@ -16,4 +16,7 @@ update_zeeman
 update_anis
 relax
 save_m
+save_vtk
+save_ovf
+read_ovf
 ```
