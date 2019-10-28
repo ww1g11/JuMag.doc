@@ -175,3 +175,160 @@ println("Done!")
 The output file is a simple text compatible with [Gnuplot](http://www.gnuplot.info/), like used for plot below.
 
 ![std4](scripts/std4.png)
+
+
+## A NEB example (vortex core reversal)
+
+The magnetic vortex core can either point up or point down. In this example, we will compute the energy barrier
+between this two states. We will use NEB (Nudged elastic band) method.
+
+To begin, we need to prepare this two states which can be done by defining two initial functions
+`init_m_point_up` and `init_m_point_down`. After running the following script, two states in
+the format of OVF2 (`up.ovf` and `down.ovf`) will be saved.
+```julia
+using JuMag
+using Printf
+
+JuMag.cuda_using_double(true)
+mesh =  FDMeshGPU(dx=2e-9, dy=2e-9, dz=5e-9, nx=100, ny=100, nz=4)
+
+function circular_Ms(i,j,k,dx,dy,dz)
+    x = i-50.5
+    y = j-50.5
+    r = (x^2+y^2)^0.5
+    if (i-50.5)^2 + (j-50.5)^2 <= 50^2
+        return 8e5
+    end
+    return 0.0
+end
+
+function init_m_point_up(i,j,k,dx,dy,dz)
+  x = i-50.5
+  y = j-50.5
+  r = (x^2+y^2)^0.5
+  if r<5
+    return (0,0,1)
+  end
+  return (y/r, -x/r, 0)
+end
+
+function init_m_point_down(i,j,k,dx,dy,dz)
+  x = i-50.5
+  y = j-50.5
+  r = (x^2+y^2)^0.5
+  if r<5
+    return (0,0,1)
+  end
+  return (y/r, -x/r, 0)
+end
+
+function relax_system(init_fun, name)
+  sim = Sim(mesh, driver="SD", name="sim")
+  set_Ms(sim, circular_Ms)
+
+  add_exch(sim, 1.3e-11, name="exch")
+  add_demag(sim)
+
+  init_m0(sim, init_fun)
+  relax(sim, maxsteps=2000, stopping_torque = 1.0)
+  save_ovf(sim, name)
+end
+
+for (init_m, name) in [(init_m_point_up, "up"), (init_m_point_down, "down")]
+  relax_system(init_m, name)
+end
+```
+
+After generating the two states we are interested in, we can use NEB method.
+In JuMag, we have a pure CPU version of NEB and a GPU version which supports multiple GPUs
+with the helper of MPI. In this example, we will use the latter, i.e., `NEB_MPI`. Typically,
+three parameters are needed to start the NEB simulation:
+
+- sim -- an instance of MicroSimGPU.
+- init_m -- an array that contains at least two ends states. If you have more information about
+the middle states, you can put it into init_m array.
+- interpolations -- an array to contain the number of interpolations between given states. So
+length(interpolations) must equal to length(init_m) - 1.
+
+So the typical usage is given as follows
+```
+function relax_neb()
+    ovf1 = read_ovf("down.ovf")
+    ovf2 = read_ovf("up.ovf")
+    sim = create_sim()
+    init_m = [ovf1.data, ovf2.data]
+    interpolations = [12]
+    neb = NEB_MPI(sim, init_m, interpolations, driver="LLG")
+    relax(neb, maxsteps=10000, stopping_dmdt = 0.5, save_ovf_every=500)
+end
+```
+
+In the function `relax_neb` we called `create_sim` which is very similar to the function `relax_system`,
+actually, two functions should have exactly the same micromagnetic parameters. Here, to save GPU memory we
+do not use any driver (by setting `driver="none"`) and let `save_data=false` when creating the Sim instance.
+```
+function create_sim()
+    mesh =  FDMeshGPU(dx=2e-9, dy=2e-9, dz=5e-9, nx=100, ny=100, nz=4)
+    sim = Sim(mesh, name="sim", driver="none", save_data=false)
+    set_Ms(sim, circular_Ms)
+    init_m0(sim, (0,0,1))
+    add_demag(sim)
+    add_exch(sim, 1.3e-11)
+    return sim
+end
+```
+
+Moreover, if you are going to use multiple GPUs, you need to add `JuMag.using_multiple_gpus()`,
+the number of GPUs will be set to the number of processes of MPI. Put it all together,
+the script is given by
+```
+using JuMag
+using CuArrays
+using Printf
+JuMag.cuda_using_double(true)
+CuArrays.allowscalar(false)  #important for performance
+
+JuMag.using_multiple_gpus()
+
+function create_sim()
+    mesh =  FDMeshGPU(dx=2e-9, dy=2e-9, dz=5e-9, nx=100, ny=100, nz=4)
+    sim = Sim(mesh, name="sim", driver="none", save_data=false)
+    set_Ms(sim, circular_Ms)
+    init_m0(sim, (0,0,1))
+    add_demag(sim)
+    add_exch(sim, 1.3e-11)
+    return sim
+end
+
+function circular_Ms(i,j,k,dx,dy,dz)
+    x = i-50.5
+    y = j-50.5
+    r = (x^2+y^2)^0.5
+    if (i-50.5)^2 + (j-50.5)^2 <= 50^2
+        return 8e5
+    end
+    return 0.0
+end
+
+function relax_neb()
+    ovf1 = read_ovf("vortex_down.ovf")
+    ovf2 = read_ovf("vortex_up.ovf")
+    sim = create_sim()
+    neb = NEB_MPI(sim,(ovf1.data, ovf2.data),(12), driver="LLG")
+    relax(neb, maxsteps=10000, stopping_dmdt=1.0, save_ovf_every=500)
+end
+
+relax_neb()
+```
+
+The Slurm script two use two GPUs:
+```
+#!/bin/bash
+#SBATCH --nodes=1             # Number of nodes
+#SBATCH --ntasks=2            # Number of MPI processes
+#SBATCH --cpus-per-task=1     # Number of CPUs per task
+#SBATCH --gres=gpu:2          # Number of GPUs
+mpiexec -np 2 julia main.jl
+```
+
+![neb_vortex](figures/neb_vortex.png)

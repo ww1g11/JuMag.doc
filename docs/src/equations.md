@@ -47,7 +47,7 @@ E_\mathrm{cubic} = -\int_{V} K_c (m_x^4 + m_y^4 + m_z^4) \, dV
 and thus the corresponding effective field reads
 ```math
 \vec{H}_{\mathrm{cubic}}= \frac{4 K_c}{\mu_0 M_s}  
-\left( m_x^3 \mathbf{e}_x + m_y^3 \mathbf{e}_y + m_z^3 \mathbf{e}_z \right) 
+\left( m_x^3 \mathbf{e}_x + m_y^3 \mathbf{e}_y + m_z^3 \mathbf{e}_z \right)
 ```
 
 - **Bulk DMI energy**
@@ -160,6 +160,51 @@ where
 ```math
 \vec{D}_{i j} = D \hat{z} \times \hat{r}_{ij}  + D_z^{j} \hat{z}
 ```
+
+## NEB (Nudged elastic band)
+
+NEB is a chain method to find the MEP (minimum energy path) between two states. To start, we need to construct
+a chain including several images (each image is a copy of the magnetization) and then relax the system. Two ends images that corresponding to the initial and final states will be pinned as they are the energy states given by the users.  The system contain all free images will be relaxed to reduce the total energy, which is very similar to the case that relaxing the magnetic system using LLG equation if one disables the precession term. One significant difference is that the effective field in LLG equation is the functional derivative of the system energy with respect to magnetization while in NEB the effective field of image *n* should also contain the influence of its neighbours (i.e., the images *n-1* and *n+1*). This influence is described by the so-called tangents: only the perpendicaular part of the effective field is kept when relaxing the whole system.
+
+Assume that the whole system has *N* images
+
+```math
+\mathbf{Z} = [\mathbf{Y}_1, \mathbf{Y}_2, ..., \mathbf{Y}_N]
+```
+where
+```math
+\mathbf{Y}_i = [m_{1x}, m_{1y}, m_{1z}, ..., m_{nx}, m_{ny}, m_{nz}]
+```
+each image has *n* spins. To relax the system, we could solve the equation
+```math
+\frac{\mathbf{Y}_i}{\partial t} = - \mathbf{Y}_i \times (\mathbf{Y}_i \times \mathbf{G}_i)
+```
+where $\mathbf{G}_i$ is effective field that can be computed as
+```math
+\mathbf{Y}_i = \mathbf{H}_i - (\mathbf{H}_i \cdot \mathbf{t}_i) \mathbf{t}_i +  \mathbf{F}_i
+```
+The $\mathbf{H}_i$ is the normal micromagnetic effective field,
+$\mathbf{t}_i$ is the tangent and $\mathbf{F}_i$ is a force that can be used to adjust the distance between images.
+
+```math
+ \mathbf{F}_i = k (|\mathbf{Y}_{i+1}-\mathbf{Y}_{i}|-|\mathbf{Y}_{i}-\mathbf{Y}_{i-1}|) \mathbf{t}_i
+```
+
+The distance bewteen images $\mathbf{Y}_{i}$ and $\mathbf{Y}_{j}$ is defined as
+```math
+ L = \left [ \sum_k (L_k^{i,j})^2 \right ] ^{1/2}
+```
+where $L_k^{i,j}$ is the geodesic distance of point `k` that can be computed using
+Vincenty’s formula.
+
+The tangents can be computed as follows
+
+```math
+\mathbf{t}_i^+ =  \mathbf{Y}_{i+1}-\mathbf{Y}_{i}\\
+\mathbf{t}_i^- =  \mathbf{Y}_{i}-\mathbf{Y}_{i-1}
+```
+
+The detailed equations can be found @ [Journal of Chemical Physics 113, 22 (2000)] and [Computer Physics Communications 196 (2015) 335–347].
 
 ## Eigenvalue Method
 Micromagnetic system and the corresponding atomistic model are the classical system. The resonance frequencies
