@@ -332,3 +332,61 @@ mpiexec -np 2 julia main.jl
 ```
 
 ![neb_vortex](figures/neb_vortex.png)
+
+
+## Monte Carlo (M-T curve)
+We can use Monte Carlo to compute the M-T curve. For the atomistic model with `$z$` nearest neighbors,
+the relation between exchange constant and `$T_c$` reads [^1]
+
+```math
+J = \frac{3 k_B T_c}{ \epsilon z }
+```
+
+where $\epsilon$ is a correction factor. For 3D classical Heisenberg model $\epsilon \approx  0.719$.
+In this example, we will assume $J=300k_B$ which gives $T_c = 431 K$. The full script is shown below.
+
+```julia
+using JuMag
+using Random
+
+JuMag.cuda_using_double(true)
+
+function relax_system(T)
+  mesh =  CubicMeshGPU(nx=30, ny=30, nz=30, pbc="xyz")
+  sim = MonteCarloNew(mesh, name="mc")
+  init_m0(sim, (0,0,1))
+
+  add_exch(sim, J=300*k_B)
+  add_dmi(sim, D=0, D1=0)
+  add_zeeman(sim, Hx=0, Hy=0, Hz=0)
+  add_anis(sim, Ku=0, Kc=0)
+
+  sim.T = 100000
+  run_sim(sim, maxsteps=50000, save_vtk_every=-1, save_m_every=-1)
+  sim.T = T
+  run_sim(sim, maxsteps=200000, save_vtk_every=-1, save_m_every=-1)
+
+  ms = zeros(1000)
+  sim.T = T
+  for i = 1:1000
+      run_sim(sim, maxsteps=100, save_vtk_every=-1, save_m_every=-1)
+      t = JuMag.average_m(sim)
+      ms[i] = sqrt(t[1]^2+t[2]^2+t[3]^2)
+  end
+  return sum(ms)/length(ms)
+end
+
+f = open("M_H.txt", "w")
+write(f, "#T(K)     m \n")
+for T = 10:20:500
+    println("Running for $T ...")
+    m = relax_system(T)
+    write(f, "$T    $m \n")
+end
+close(f)
+```
+
+The obtained M-T curve is shown as follows, where the obtained $T_c$ is closed to 440 K.s
+![M_T](figures/mz_T.png)
+
+[^1] Atomistic spin model simulations of magnetic nanomaterials, J. Phys.: Condens. Matter 26 (2014) 103202.
