@@ -125,6 +125,7 @@ relax_system()
 ```
 
 ## Standard Problem #4
+
 ```julia
 using JuMag
 using Printf
@@ -176,15 +177,12 @@ The output file is a simple text compatible with [Gnuplot](http://www.gnuplot.in
 
 ![std4](scripts/std4.png)
 
-
 ## A NEB example (vortex core reversal)
 
-The magnetic vortex core can either point up or point down. In this example, we will compute the energy barrier
-between this two states. We will use NEB (Nudged elastic band) method.
+The magnetic vortex core can either point up or point down. In this example, we will compute the energy barrier between this two states. We will use NEB (Nudged elastic band) method.
 
-To begin, we need to prepare this two states which can be done by defining two initial functions
-`init_m_point_up` and `init_m_point_down`. After running the following script, two states in
-the format of OVF2 (`up.ovf` and `down.ovf`) will be saved.
+To begin, we need to prepare this two states which can be done by defining two initial functions `init_m_point_up` and `init_m_point_down`. After running the following script, two states in the format of OVF2 (`up.ovf` and `down.ovf`) will be saved.
+
 ```julia
 using JuMag
 using Printf
@@ -239,18 +237,14 @@ for (init_m, name) in [(init_m_point_up, "up"), (init_m_point_down, "down")]
 end
 ```
 
-After generating the two states we are interested in, we can use NEB method.
-In JuMag, we have a pure CPU version of NEB and a GPU version which supports multiple GPUs
-with the helper of MPI. In this example, we will use the latter, i.e., `NEB_MPI`. Typically,
-three parameters are needed to start the NEB simulation:
+After generating the two states we are interested in, we can use NEB method. In JuMag, we have a pure CPU version of NEB and a GPU version which supports multiple GPUs with the helper of MPI. In this example, we will use the latter, i.e., `NEB_MPI`. Typically, three parameters are needed to start the NEB simulation:
 
 - sim -- an instance of MicroSimGPU.
-- init_m -- an array that contains at least two ends states. If you have more information about
-the middle states, you can put it into init_m array.
-- interpolations -- an array to contain the number of interpolations between given states. So
-length(interpolations) must equal to length(init_m) - 1.
+- init_m -- an array that contains at least two ends states. If you have more information about the middle states, you can put it into init_m array.
+- interpolations -- an array to contain the number of interpolations between given states. So length(interpolations) must equal to length(init_m) - 1.
 
 So the typical usage is given as follows
+
 ```
 function relax_neb()
     ovf1 = read_ovf("down.ovf")
@@ -263,9 +257,8 @@ function relax_neb()
 end
 ```
 
-In the function `relax_neb` we called `create_sim` which is very similar to the function `relax_system`,
-actually, two functions should have exactly the same micromagnetic parameters. Here, to save GPU memory we
-do not use any driver (by setting `driver="none"`) and let `save_data=false` when creating the Sim instance.
+In the function `relax_neb` we called `create_sim` which is very similar to the function `relax_system`, actually, two functions should have exactly the same micromagnetic parameters. Here, to save GPU memory we do not use any driver (by setting `driver="none"`) and let `save_data=false` when creating the Sim instance.
+
 ```
 function create_sim()
     mesh =  FDMeshGPU(dx=2e-9, dy=2e-9, dz=5e-9, nx=100, ny=100, nz=4)
@@ -278,9 +271,8 @@ function create_sim()
 end
 ```
 
-Moreover, if you are going to use multiple GPUs, you need to add `JuMag.using_multiple_gpus()`,
-the number of GPUs will be set to the number of processes of MPI. Put it all together,
-the script is given by
+Moreover, if you are going to use multiple GPUs, you need to add `JuMag.using_multiple_gpus()`, the number of GPUs will be set to the number of processes of MPI. Put it all together, the script is given by
+
 ```
 using JuMag
 using CuArrays
@@ -322,6 +314,7 @@ relax_neb()
 ```
 
 The Slurm script two use two GPUs:
+
 ```
 #!/bin/bash
 #SBATCH --nodes=1             # Number of nodes
@@ -333,17 +326,15 @@ mpiexec -np 2 julia main.jl
 
 ![neb_vortex](figures/neb_vortex.png)
 
-
 ## Monte Carlo (M-T curve)
-We can use Monte Carlo to compute the M-T curve. For the atomistic model with `$z$` nearest neighbors,
-the relation between exchange constant and `$T_c$` reads [^1]
+
+We can use Monte Carlo to compute the M-T curve. For the atomistic model with $z$ nearest neighbors, the relation between exchange constant and $T_c$ reads [^1]
 
 ```math
 J = \frac{3 k_B T_c}{ \epsilon z }
 ```
 
-where $\epsilon$ is a correction factor. For 3D classical Heisenberg model $\epsilon \approx  0.719$.
-In this example, we will assume $J=300k_B$ which gives $T_c = 431 K$. The full script is shown below.
+where $\epsilon$ is a correction factor. For 3D classical Heisenberg model $\epsilon \approx 0.719$. In this example, we will assume $J=300k_B$ which gives $T_c = 431 K$. The full script is shown below.
 
 ```julia
 using JuMag
@@ -386,7 +377,6 @@ end
 close(f)
 ```
 
-The obtained M-T curve is shown as follows, where the obtained $T_c$ is closed to 440 K.s
-![M_T](figures/mz_T.png)
+The obtained M-T curve is shown as follows, where the obtained $T_c$ is closed to 440 K.s ![M_T](figures/mz_T.png)
 
 [^1] Atomistic spin model simulations of magnetic nanomaterials, J. Phys.: Condens. Matter 26 (2014) 103202.
