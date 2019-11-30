@@ -19,6 +19,6 @@ makedocs(
 )
 
 deploydocs(
-    deps = Deps.pip("pygments", "mkdocs", "python-markdown-math"),
+    #deps = Deps.pip("pygments", "mkdocs", "python-markdown-math"),
     repo = "github.com/ww1g11/JuMagDocs.jl"
 )
