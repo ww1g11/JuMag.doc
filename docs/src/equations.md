@@ -103,7 +103,7 @@ For the driver `LLG_STT_CPP` the implemented equations is
 ```math
 \frac{\partial \vec{m}}{\partial t} = - \gamma \vec{m} \times \vec{H} + \alpha \vec{m} \times  \frac{\partial \vec{m}}{\partial t}
 + (\vec{u} \cdot \nabla) \vec{m} - \beta [\vec{m}\times (\vec{u} \cdot \nabla)\vec{m}] - a_J \vec{m} \times (\vec{m} \times \vec{p})
- - \eta a_J \vec{m} \times \vec{p}
+ -  b_J \vec{m} \times \vec{p}
 ```
 
 The simulation related to spin transfer torques (in-plane and current-perpendicular-to-plane) and the spin orbit torques can use the `LLG_STT_CPP` driver.
