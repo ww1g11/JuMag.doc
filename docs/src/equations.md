@@ -108,6 +108,39 @@ For the driver `LLG_STT_CPP` the implemented equations is
 
 The simulation related to spin transfer torques (in-plane and current-perpendicular-to-plane) and the spin orbit torques can use the `LLG_STT_CPP` driver.
 
+## SLLG equation
+
+The SLLG equation, i.e., LLG equation including the stochastic field $\mathbf{b}$, is given by
+
+```math
+\frac{\partial \mathbf{m}}{\partial t} = - \gamma \mathbf{m} \times (\mathbf{H}_\mathrm{eff} +\mathbf{b}) + \alpha \mathbf{m} \times  \frac{\partial \mathbf{m}}{\partial t}
+```
+The thermal fluctuation is assumed to be a Gaussian white noise, i.e., the thermal noise $\mathbf{b}$ obeys the  properties
+
+```math
+\left< \mathbf{b} \right> = 0, \;\;\; \left< \mathbf{b}_i^u,\mathbf{b}_j^v \right> = 2 D \delta_{ij} \delta_{uv}
+```
+
+where $i$ and $j$ are Cartesian indices, $u$ and $v$ indicate the magnetization components and $\left< \cdot , \cdot \right>$
+represents the average taken over different realizations of the fluctuating field. And
+
+```math
+D = \frac{\alpha k_B T}{\gamma \mu_s}.
+```
+
+For the micromagnetic case, $D$ is given as
+
+```math
+D = \frac{\alpha k_B T}{\mu_0 M_s \gamma \Delta V}.
+```
+which is equivalent to a stochastic field  
+
+```math
+\mathbf{b}^u = \eta \sqrt \frac{2 \alpha k_B T}{\mu_0 M_s \gamma \Delta V dt}
+```
+
+where $\eta$ is a random number follows the normal distribution.
+
 ## Steepest descent method
 
 We provide a steepest descent energy minimization method for a complicated system, which is of the form

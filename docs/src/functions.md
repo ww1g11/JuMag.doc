@@ -3,6 +3,7 @@
 ```@docs
 FDMesh
 TriangularMesh
+TriangularMeshGPU
 Sim
 JuMag.NumberOrArrayOrFunction
 JuMag.TupleOrArrayOrFunction
