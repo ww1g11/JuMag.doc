@@ -1,4 +1,26 @@
 # Notes
+## Structures
+
+### Mesh
+```@raw html
+<img src="../figures/mesh.png" width="600"/>
+```
+
+### Sim
+```@raw html
+<img src="../figures/sim.png" width="600"/>
+```
+
+### Driver
+```@raw html
+<img src="../figures/driver.png" width="500"/>
+```
+
+### Energy
+```@raw html
+<img src="../figures/energy.png" width="400"/>
+```
+
 ## Reducing the startup time
 
 Julia is a dynamically-typed language, so the input script will be compiled when we start a simulation. However, the typical startup time in our case ranges from 1s to 30s depends on the complexity of the problem. It is painful especially if we run the simulation using GPU. Luckily, we can compile our package using [PackageCompiler.jl](https://github.com/JuliaLang/PackageCompiler.jl):

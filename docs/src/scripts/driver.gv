@@ -1,4 +1,5 @@
 digraph G {
+  rankdir=LR
 	Driver
 	LLG [shape=box]
 	LLG_STT [shape=box]
@@ -6,7 +7,7 @@ digraph G {
 	Driver -> LLG
 	Driver -> LLG_STT
 	Driver -> EnergyMinimization
-	DriverGPU
+  DriverGPU
 	EnergyMinimization_GPU [shape=box]
 	LLG_GPU [shape=box]
 	LLG_STT_GPU [shape=box]

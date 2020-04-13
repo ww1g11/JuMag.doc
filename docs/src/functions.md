@@ -1,13 +1,32 @@
-# Function References
+# References
+
+### Meshes
 
 ```@docs
 FDMesh
-TriangularMesh
+FDMeshGPU
+CubicMeshGPU
 TriangularMeshGPU
-Sim
+```
+
+
+
+### DataTypes
+
+```@docs
 JuMag.NumberOrArrayOrFunction
+JuMag.NumberOrArray
 JuMag.TupleOrArrayOrFunction
+```
+
+
+
+### Interfaces
+
+```@docs
+Sim
 set_Ms
+set_mu_s
 init_m0
 init_m0_random
 init_m0_skyrmion
@@ -22,9 +41,24 @@ add_anis_kagome
 update_zeeman
 update_anis
 relax
+```
+
+
+
+### DataSaving
+
+```@docs
 save_m
 save_vtk
-ovf2vtk
 save_ovf
 read_ovf
 ```
+
+
+
+### Tools
+
+```@docs
+ovf2vtk
+```
+

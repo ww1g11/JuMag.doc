@@ -6,7 +6,7 @@ gvs = ["sim.gv",
 
 for gv in gvs
     png = gv[1:end-2]*"png"
-    cmd = `dot -Tpng -Gdpi=300 $gv -o $png`
+    cmd = `dot -Tpng -Gdpi=200 $gv -o $png`
     println(cmd)
     run(cmd)
 end

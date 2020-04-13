@@ -1,5 +1,6 @@
 using Documenter
 using JuMag
+#using DocumenterTools: Themes
 
 makedocs(
     sitename = "JuMag.jl",
@@ -14,6 +15,7 @@ makedocs(
         "equations.md",
         "notes.md",
         "functions.md",
+        "questions.md"
         #"Examples" => ["examples/std4.md", "examples/SW.md"]
         ],
     highlightsig = true

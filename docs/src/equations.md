@@ -1,4 +1,4 @@
-# Implemented equations
+# Equations
 
 ## Energies and effective field
 
@@ -387,16 +387,17 @@ where we have ignored the higher-order terms. In addition, the above equation ca
 where we have introduced two vectors $\vec{u}=(\tilde{u}_1, \tilde{u}_2, ..., \tilde{u}_n)^T$ and $\vec{v}=(\tilde{v}_1, \tilde{v}_2, ..., \tilde{v}_n)^T$. Therefore, the normal modes of the system can be obtained through solving the eigenvalues of the matrix $\mathbf{A}$. The eigenvalues are pure imaginary numbers since $\omega$ is real. The related effective fields are given by
 
 ```math
-\begin{matrix}
+\begin{aligned}
 \tilde{H}_w = -(\partial \mathcal{H}^{(0)}/{\partial w}) \big|_{w=1} \\
 \tilde{h}_u = -(\partial \mathcal{H}^{(2)}/{\partial u}) \big|_{w=1, u=\tilde{u}, v=\tilde{v}} \\
 \tilde{h}_v = -(\partial \mathcal{H}^{(2)}/{\partial v}) \big|_{w=1, u=\tilde{u}, v=\tilde{v}} .
-\end{matrix}
+\end{aligned}
 ```
 
 - **Exchange interaction**
 
   ```math
+  \begin{aligned}
   \tilde{H}^\mathrm{ex}_{w, i} = J  \sum_j \left [ \cos \theta_i \cos \theta_j + \sin \theta_i \sin \theta_j  \cos(\phi_i-\phi_j) \right],\\
   \tilde{h}^\mathrm{ex}_{u, i} =  J \sum_j \left [ \tilde{u}_j \cos(\phi_i-\phi_j) \cos \theta_i \cos \theta_j + \tilde{u}_j \sin \theta_i \sin \theta_j + \tilde{v}_j \cos\theta_i \sin (\phi_i - \phi_j)  \right], \\
   \tilde{h}^\mathrm{an}_{v, i} =   J \sum_j \left [  -\tilde{u}_j \cos\theta_j \sin (\phi_i - \phi_j) + \tilde{v}_j \cos(\phi_i-\phi_j)  \right].
@@ -405,28 +406,34 @@ where we have introduced two vectors $\vec{u}=(\tilde{u}_1, \tilde{u}_2, ..., \t
 - **DMI**
 
   ```math
+  \begin{aligned}
   \tilde{H}^\mathrm{dmi}_{w, i} =  \sum_{j \in X} D_{ij}  \left(  \sin \theta_j \sin \phi_j \cos \theta_i - \sin \theta_i \sin \phi_i \cos \theta_j \right) + \\
      \sum_{j \in Y} D_{ij}  \left(  \sin \theta_i \cos \phi_i \cos \theta_j - \sin \theta_j \cos \phi_j \cos \theta_i  \right) + \\
      \sum_{j \in Z} D_{ij}   \left [  \sin \theta_i \sin \theta_j \sin(\phi_i-\phi_j) \right],
+  \end{aligned}
   ```
 
   where $D_{ij}=D\mathrm{sgn}(j-i)$ with $\mathrm{sgn}(x)$ the sign function. The sets $X$, $Y$ and $Z$ represent the neighbours of site $i$ in $x$-, $y$- and $z$-axis. Meanwhile, $\tilde{h}^\mathrm{dmi}_{u, i}$ and $\tilde{h}^\mathrm{dmi}_{v, i}$ are given by
 
   ```math
+  \begin{aligned}
   \tilde{h}^\mathrm{dmi}_{u, i} =  \sum_{j \in X} D_{ij} \left(
   \tilde{u}_j \sin \theta_j \sin \phi_i \cos \theta_i - \tilde{u}_j \sin \theta_i \sin \phi_j \cos \theta_j - \tilde{v}_j \sin \theta_i \cos\phi_j \right) +\\
   \sum_{j\in Y} D_{ij} \left (\tilde{u}_j \sin \theta_i \cos \phi_j \cos \theta_j - \tilde{u}_j \sin \theta_j \cos \phi_i \cos \theta_i - \tilde{v}_j \sin \theta_i \sin\phi_j  \right) + \\
   \sum_{j\in Z} D_{ij} \cos \theta_i  \left [ \tilde{u}_j  \cos \theta_j \sin(\phi_i- \phi_j) -\tilde{v}_j \cos(\phi_i-\phi_j)  \right ],\\
   \tilde{h}^\mathrm{dmi}_{v, i} = \sum_{j \in X} D_{ij}  \tilde{u}_j \sin \theta_j \cos\phi_i + \textstyle \sum_{j \in Y} D_{ij} \tilde{v}_j \sin \theta_j  \sin\phi_i + \\
                   {\sum_{j \in Z}} D_{ij} \left[ \tilde{u}_j  \cos \theta_j  \cos(\phi_i -\phi_j) + \tilde{v}_j \sin (\phi_i-\phi_j) \right].
+  \end{aligned}
   ```
 
 - **Anisotropy** For anisotropies with $\mathcal{H}_{an} = - \sum_{i} (K_x m_{x,i}^2 + K_z m_{z,i}^2)$, these fields are given by
 
   ```math
+  \begin{aligned}
   \tilde{H}^\mathrm{an}_{w, i} = 2K_x\cos^2 \phi_i \sin^2 \theta_i +  2K_z \cos^2 \theta_i, \\
   \tilde{h}^\mathrm{an}_{u, i} =  2K_x \cos \phi_i \cos \theta_i (\tilde{u}_i \cos\phi_i \cos \theta_i - \tilde{v}_i \sin\phi_i) +2 K_z \tilde{u}_i \sin^2\theta_i, \\
   \tilde{h}^\mathrm{an}_{v, i} = 2K_x \sin \phi_i (-\tilde{u}_i \cos\phi_i \cos \theta_i + \tilde{v}_i \sin\phi_i ).
+  \end{aligned}
   ```
 
 - **Zeeman Field** For a static external field $\vec{H}=(H_x, H_y, H_z)$, one obtains $\tilde{h}_u = \tilde{h}_v = 0$ and $\tilde{H}^a_{w, i} = H_z \cos \theta_i + H_x \cos \phi_i \sin \theta_i + H_y \sin \phi_i \sin \theta_i$.
