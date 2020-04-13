@@ -1,0 +1,26 @@
+digraph "G [1111]" {
+	MicroEnergy
+	Energys [label="ExchangeGPU 
+ Vector_Exchange
+ExchangeRKKY
+BulkDMI 
+ InterfacialDMI
+SpatialBulkDMI 
+ Zeeman
+StochasticField 
+ Anisotropy
+CubicAnisotropy" shape=box]
+	MicroEnergy -> Energys
+	MicroEnergyGPU
+	Energys_GPU [label="ExchangeGPU
+ Vector_ExchangeGPU
+ExchangeRKKYGPU
+BulkDMIGPU 
+ InterfacialDMIGPU
+SpatialBulkDMIGPU 
+ ZeemanGPU
+StochasticFieldGPU
+AnisotropyGPU
+CubicAnisotropyGPU" shape=box]
+	MicroEnergyGPU -> Energys_GPU
+}
