@@ -26,6 +26,7 @@ JuMag.TupleOrArrayOrFunction
 ```@docs
 Sim
 set_Ms
+set_Ms_cylindrical
 set_mu_s
 init_m0
 init_m0_random

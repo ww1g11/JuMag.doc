@@ -118,7 +118,7 @@ The typical energy terms are
 
 ## LLG equation
 
-The LLG equation is written as
+The driver `LLG` solves the standard LLG equation, which can be written as
 
 ```math
 \frac{\partial \vec{m}}{\partial t} = - \gamma \vec{m} \times \vec{H} + \alpha \vec{m} \times  \frac{\partial \vec{m}}{\partial t}
@@ -132,15 +132,29 @@ and the corresponding LL form is given by
 
 ## LLG equation with extensions
 
-For the driver `LLG_STT_CPP` the implemented equations is
+The driver `LLG_STT` implements the LLG equation with zhang-li extension
+
+```math
+\frac{\partial \vec{m}}{\partial t} = - \gamma \vec{m} \times \vec{H} + \alpha \vec{m} \times  \frac{\partial \vec{m}}{\partial t}
++ (\vec{u} \cdot \nabla) \vec{m} - \beta [\vec{m}\times (\vec{u} \cdot \nabla)\vec{m}]
+```
+
+and the driver `LLG_CPP` implements the LLG equation with spin transfer torque
+for the current-perpendicular-to-plane (CPP) case,
+
+```math
+\frac{\partial \vec{m}}{\partial t} = - \gamma \vec{m} \times \vec{H} + \alpha \vec{m} \times  \frac{\partial \vec{m}}{\partial t} - a_J \vec{m} \times (\vec{m} \times \vec{p})
+ -  b_J \vec{m} \times \vec{p}
+```
+The spin valve structures and  spin orbit torques can use the `LLG_CPP` driver.
+
+The driver `LLG_STT_CPP` has put them together,
 
 ```math
 \frac{\partial \vec{m}}{\partial t} = - \gamma \vec{m} \times \vec{H} + \alpha \vec{m} \times  \frac{\partial \vec{m}}{\partial t}
 + (\vec{u} \cdot \nabla) \vec{m} - \beta [\vec{m}\times (\vec{u} \cdot \nabla)\vec{m}] - a_J \vec{m} \times (\vec{m} \times \vec{p})
  -  b_J \vec{m} \times \vec{p}
 ```
-
-The simulation related to spin transfer torques (in-plane and current-perpendicular-to-plane) and the spin orbit torques can use the `LLG_STT_CPP` driver.
 
 ## SLLG equation
 
@@ -401,6 +415,7 @@ where we have introduced two vectors $\vec{u}=(\tilde{u}_1, \tilde{u}_2, ..., \t
   \tilde{H}^\mathrm{ex}_{w, i} = J  \sum_j \left [ \cos \theta_i \cos \theta_j + \sin \theta_i \sin \theta_j  \cos(\phi_i-\phi_j) \right],\\
   \tilde{h}^\mathrm{ex}_{u, i} =  J \sum_j \left [ \tilde{u}_j \cos(\phi_i-\phi_j) \cos \theta_i \cos \theta_j + \tilde{u}_j \sin \theta_i \sin \theta_j + \tilde{v}_j \cos\theta_i \sin (\phi_i - \phi_j)  \right], \\
   \tilde{h}^\mathrm{an}_{v, i} =   J \sum_j \left [  -\tilde{u}_j \cos\theta_j \sin (\phi_i - \phi_j) + \tilde{v}_j \cos(\phi_i-\phi_j)  \right].
+  \end{aligned}
   ```
 
 - **DMI**
