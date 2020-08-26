@@ -33,6 +33,7 @@ init_m0_random
 init_m0_skyrmion
 add_exch
 add_anis
+add_cubic_anis
 add_dmi
 add_demag
 add_zeeman
@@ -61,5 +62,9 @@ read_ovf
 
 ```@docs
 ovf2vtk
+OVF2LTEM
+OVF2MFM
+OVF2XRAY
+plotOVF
 ```
 
