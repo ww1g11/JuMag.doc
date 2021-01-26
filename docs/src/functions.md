@@ -42,6 +42,7 @@ add_zeeman
 add_exch_vector
 add_exch_kagome
 add_anis_kagome
+add_exch_anis
 update_zeeman
 update_anis
 relax
@@ -67,6 +68,7 @@ ovf2vtk
 OVF2LTEM
 OVF2MFM
 OVF2XRAY
-plotOVF
+plot_ovf_slice
+plot_ovf_projection
 ```
 
