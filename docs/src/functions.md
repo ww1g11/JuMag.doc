@@ -57,6 +57,9 @@ save_m
 save_vtk
 save_ovf
 read_ovf
+effective_field
+compute_system_energy
+compute_fields_to_gpu
 ```
 
 
@@ -65,10 +68,7 @@ read_ovf
 
 ```@docs
 ovf2vtk
-OVF2LTEM
-OVF2MFM
-OVF2XRAY
-plot_ovf_slice
-plot_ovf_projection
+mag2ovf
+show_mag
 ```
 
